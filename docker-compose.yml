@@ -15,7 +15,11 @@ services:
     volumes:
       - "${TMPDIR:-/tmp}/localstack:/tmp/localstack"
       - "/var/run/docker.sock:/var/run/docker.sock"
+      - ./lambdas:/lambdas
       - ./localstack/init:/etc/localstack/init/ready.d
+      - ./scripts:/scripts
+    networks:
+      - localstack_default
 networks:
   default:
     name: localstack_default
