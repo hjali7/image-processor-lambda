@@ -1,2 +1,3 @@
-./localstack
-
+# Ignore Python bytecode files
+localstack
+**/.venv
