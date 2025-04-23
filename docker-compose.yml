@@ -1,0 +1,22 @@
+services:
+  localstack:
+    container_name: localstack
+    image: localstack/localstack:latest
+    ports:
+      - 4566:4566
+      - 4571:4571
+    environment:
+      - SERVICES=serverless,cloudformation,sts,iam,lambda,s3,sqs,sns,dynamodb,apigateway,events,logs,secretsmanager,ssm,cloudwatch,route53,ec2
+      - DEBUG=1
+      - DATA_DIR=/tmp/localstack/data
+      - LAMBDA_EXECUTOR=docker
+      - DOCKER_HOST=unix:///var/run/docker.sock
+      - HOST_TMP_FOLDER=${TMPDIR:-/tmp}/localstack
+    volumes:
+      - "${TMPDIR:-/tmp}/localstack:/tmp/localstack"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+      - ./localstack/init:/etc/localstack/init/ready.d
+networks:
+  default:
+    name: localstack_default
+    driver: bridge
