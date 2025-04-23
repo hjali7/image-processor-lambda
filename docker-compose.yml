@@ -13,13 +13,10 @@ services:
       - DOCKER_HOST=unix:///var/run/docker.sock
       - HOST_TMP_FOLDER=${TMPDIR:-/tmp}/localstack
     volumes:
-      - "${TMPDIR:-/tmp}/localstack:/tmp/localstack"
       - "/var/run/docker.sock:/var/run/docker.sock"
       - ./lambdas:/lambdas
       - ./localstack/init:/etc/localstack/init/ready.d
       - ./scripts:/scripts
-    networks:
-      - localstack_default
 networks:
   default:
     name: localstack_default
