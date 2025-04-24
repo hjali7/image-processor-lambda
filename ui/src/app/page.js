@@ -1,10 +1,12 @@
 'use client'
 import { useEffect, useRef, useState } from "react"
 import BackendStatus from "./components/BackendStatus"
+import ProcessedFilePreview from "./components/ProcessedFilePreview"
 
 export default function Home() {
   const [file, setFile] = useState(null)
   const [message, setMessage] = useState("")
+  const [uploaded, setUploaded] = useState(false)
   const dropRef = useRef()
 
   const handleDrop = (e) => {
@@ -12,6 +14,7 @@ export default function Home() {
     const droppedFile = e.dataTransfer.files[0]
     setFile(droppedFile)
     setMessage("")
+    setUploaded(false)
   }
 
   const handleDragOver = (e) => {
@@ -22,6 +25,7 @@ export default function Home() {
     const selected = e.target.files[0]
     setFile(selected)
     setMessage("")
+    setUploaded(false)
   }
 
   const handleUpload = async () => {
@@ -41,6 +45,7 @@ export default function Home() {
 
       const text = await res.text()
       setMessage(text)
+      if (res.ok) setUploaded(true)
     } catch (err) {
       setMessage("❌ خطا در ارسال فایل")
     }
@@ -88,6 +93,10 @@ export default function Home() {
 
       {message && (
         <p style={{ marginTop: "1rem", fontWeight: "bold" }}>{message}</p>
+      )}
+
+      {uploaded && file?.name && (
+        <ProcessedFilePreview filename={file.name} />
       )}
     </main>
   )

@@ -8,6 +8,7 @@ load_dotenv()
 
 aws_endpoint_url=os.getenv("AWS_ENDPOINT_URL")
 
+
 def lambda_handler(event , context ) :
     print("Event received:", event)
     s3 = boto3.client("s3", endpoit_url=aws_endpoint_url)
@@ -19,7 +20,7 @@ def lambda_handler(event , context ) :
     image_object = s3.get_object(Bucket=source_bucket , key=key)
     image_content= image_object['Body'].read()
 
-    image = Image.open(io.BytesIO(image_content)).convert("L")  # "L" یعنی سیاه و سفید
+    image = Image.open(io.BytesIO(image_content)).convert("L")
     buffer = io.BytesIO()
     image.save(buffer, format='PNG')
     buffer.seek(0)
