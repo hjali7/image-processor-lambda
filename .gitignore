@@ -3,3 +3,4 @@ localstack
 **/.venv
 **/node_modules
 .env
+**.zip
