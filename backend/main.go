@@ -14,16 +14,19 @@ import (
 )
 
 func main() {
+    http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+        w.Header().Set("Access-Control-Allow-Origin", "*")
+        fmt.Fprintln(w, "👋 Backend is up and running!")
+    })
+
     http.HandleFunc("/upload", uploadHandler)
 
     fmt.Println("🚀 Server running at http://localhost:8080")
-    err := http.ListenAndServe(":8080", nil)
-    if err != nil {
-        log.Fatal("❌ Server error:", err)
-    }
+    log.Fatal(http.ListenAndServe(":8080", nil))
 }
 
 func uploadHandler(w http.ResponseWriter, r *http.Request) {
+    w.Header().Set("Access-Control-Allow-Origin", "*")
     if r.Method != http.MethodPost {
         http.Error(w, "Only POST allowed", http.StatusMethodNotAllowed)
         return
