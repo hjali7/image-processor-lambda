@@ -17,7 +17,36 @@ services:
       - ./lambdas:/lambdas
       - ./localstack/init:/etc/localstack/init/ready.d
       - ./scripts:/scripts
+  backend:
+    container_name: backend
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - 8000:8000
+    volumes:
+      - ./backend:/app
+    depends_on:
+      localstack:
+        condition: service_healthy
+    networks:
+      - app_net
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "http://localhost:8080"]
+      interval: 10s
+      retries: 3
+  ui:
+    container_name: frontend
+    build:
+      context: ./ui
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    depends_on:
+      backend:
+        condition: service_healthy
+    networks:
+      - app_net
 networks:
-  default:
-    name: localstack_default
+  app_net:
     driver: bridge
