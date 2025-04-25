@@ -1,0 +1,43 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout repository
+        uses: actions/checkout@v3
+
+      - name: 🐳 Show Docker & Compose version
+        run: |
+          docker --version
+          docker compose version
+
+      - name: 🧱 Build and run containers
+        run: docker compose up -d --build
+
+      - name: 🕒 Wait for backend to be ready
+        run: |
+          for i in {1..10}; do
+            curl -f http://localhost:8080 && exit 0
+            echo "⏳ Waiting for backend..."
+            sleep 3
+          done
+          echo "❌ Backend not responding"; exit 1
+
+      - name: 🔍 Test UI loaded
+        run: |
+          curl -sSf http://localhost:3000 | grep "آپلود عکس" || exit 1
+
+      - name: 📦 Test LocalStack S3
+        run: |
+          curl -sSf http://localhost:4566/_localstack/health | grep "\"s3\": \"running\"" || exit 1
+
+      - name: ✅ All tests passed
+        run: echo "🎉 پروژه با موفقیت تست شد"
