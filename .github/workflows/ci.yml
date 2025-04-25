@@ -20,7 +20,13 @@ jobs:
           docker compose version
 
       - name: 🧱 Build and run containers
-        run: docker compose up -d --build
+        run: |
+          docker compose up -d --build
+          sleep 15  # زمان برای بالا اومدن سرویس‌ها
+
+      - name: 📜 Show container logs (debug)
+        run: |
+          docker compose logs --no-color
 
       - name: 🕒 Wait for backend to be ready
         run: |
