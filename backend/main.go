@@ -21,8 +21,8 @@ func main() {
 
     http.HandleFunc("/upload", uploadHandler)
 
-    fmt.Println("🚀 Server running at http://localhost:8080")
-    log.Fatal(http.ListenAndServe(":8080", nil))
+    fmt.Println("🚀 Server running at http://localhost:8000")
+    log.Fatal(http.ListenAndServe(":8000", nil))
 }
 
 func uploadHandler(w http.ResponseWriter, r *http.Request) {

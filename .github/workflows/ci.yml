@@ -22,13 +22,11 @@ jobs:
       - name: 🧱 Build and run containers
         run: |
           docker compose up -d --build
-          sleep 10  # زمان برای بالا اومدن کانتینرها
-
-      - name: 📜 Show container logs (debug)
-        run: docker compose logs --no-color
+          sleep 10  # فرصت برای بالا آمدن سرویس‌ها
 
       - name: 🚀 Run init.sh manually inside LocalStack
         run: |
+          docker exec localstack chmod +x /scripts/init.sh
           docker exec localstack bash /scripts/init.sh
 
       - name: 🕒 Wait for backend to be ready
