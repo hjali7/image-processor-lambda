@@ -32,10 +32,10 @@ services:
         condition: service_healthy
     networks:
       - app_net
-    healthcheck:
-      test: ["CMD", "curl", "--spider", "http://localhost:8000"]
-      interval: 10s
-      retries: 3
+    # healthcheck:
+    #   test: ["CMD", "curl", "--spider", "http://localhost:8000"]
+    #   interval: 10s
+    #   retries: 3
   ui:
     container_name: frontend
     build:
