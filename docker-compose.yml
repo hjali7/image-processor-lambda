@@ -33,7 +33,7 @@ services:
     networks:
       - app_net
     healthcheck:
-      test: ["CMD", "wget", "--spider", "http://localhost:8000"]
+      test: ["CMD", "curl", "--spider", "http://localhost:8000"]
       interval: 10s
       retries: 3
   ui:
